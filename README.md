@@ -49,7 +49,6 @@ network-automation/
 │           └── main.yml
 └── backups/
 
-
-
+```
 ## Purpose
 The project demonstrates practical network automation skills for remote network engineering and infrastructure automation work.
