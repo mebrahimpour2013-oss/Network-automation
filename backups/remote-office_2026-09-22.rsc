@@ -1,4 +1,4 @@
-# 2026-09-16 18:17:59 by RouterOS 7.23.7
+# 2026-09-16 19:46:40 by RouterOS 7.23.7
 # software id = K7DS-TKC7
 #
 # model = RB750UPr2
@@ -33,12 +33,6 @@ add name=dhcp_pool5 ranges=192.168.20.2-192.168.20.254
 add name=dhcp_pool6 ranges=192.168.30.2-192.168.30.254
 add name=dhcp_pool7 ranges=192.168.40.2-192.168.40.254
 add name=vpn-pool ranges=10.20.20.10-10.20.20.50
-/ip dhcp-server
-add address-pool=mgmt-pool interface=vlan10-mgmt lease-time=10m name=dhcp1
-add address-pool=users-pool interface=vlan20-users lease-time=10m name=dhcp2
-add address-pool=server-pool interface=vlan30-Servers lease-time=10m name=\
-    dhcp3
-add address-pool=Guest-pool interface=vlan40-guest lease-time=10m name=dhcp4
 /ip smb users
 set [ find default=yes ] disabled=yes
 /ppp profile
@@ -77,6 +71,12 @@ add address=192.168.30.1/24 interface=vlan30-Servers network=192.168.30.0
 add address=192.168.40.1/24 interface=vlan40-guest network=192.168.40.0
 /ip dhcp-client
 add interface=ether1 name=client1
+/ip dhcp-server
+add address-pool=mgmt-pool interface=vlan10-mgmt lease-time=10m name=dhcp1
+add address-pool=users-pool interface=vlan20-users lease-time=10m name=dhcp2
+add address-pool=server-pool interface=vlan30-Servers lease-time=10m name=\
+    dhcp3
+add address-pool=Guest-pool interface=vlan40-guest lease-time=10m name=dhcp4
 /ip dhcp-server network
 add address=192.168.10.0/24 dns-server=192.168.10.1 gateway=192.168.10.1
 add address=192.168.20.0/24 dns-server=192.168.20.1 gateway=192.168.20.1
