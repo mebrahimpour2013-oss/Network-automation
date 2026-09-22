@@ -1,11 +1,10 @@
 # Network Automation
 
-Business-oriented network automation project using Ansible, MikroTik, Cisco IOS and Git.
+Business-oriented network automation project using Ansible, MikroTik RouterOS, Cisco IOS and Git.
 
 ## Overview
 
-This project automates network configuration collection and backup across
-MikroTik routers and Cisco switches.
+This project automates configuration collection and backup across MikroTik routers and Cisco switches using Ansible.
 
 ## Environment
 
@@ -30,7 +29,7 @@ MikroTik routers and Cisco switches.
 - Automated MikroTik configuration export
 - Automated Cisco running-config backup
 - Multi-device automation
-- Separate credentials for each device group
+- Separate credentials for MikroTik and Cisco
 - Timestamped backup files
 - Role-based Ansible structure
 - Git version control
@@ -51,4 +50,4 @@ network-automation/
 └── backups/
 
 Purpose
-The project demonstrates practical network automation skills for remote network engineering and infrastructure automation work
+The project demonstrates practical network automation skills for remote network engineering and infrastructure automation work.
