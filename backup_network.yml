@@ -1,0 +1,32 @@
+---
+- name: Backup MikroTik
+  hosts: mikrotik
+  gather_facts: false
+
+  tasks:
+    - name: Export MikroTik configuration
+      community.routeros.command:
+        commands:
+          - /export
+      register: backup
+
+    - name: Save MikroTik backup
+      ansible.builtin.copy:
+        content: "{{ backup.stdout[0] }}"
+        dest:  "backups/{{ inventory_hostname }}_{{ lookup('pipe', 'date +%Y-%m-%d') }}.rsc"
+
+- name: Backup Cisco
+  hosts: cisco
+  gather_facts: false
+
+  tasks:
+    - name: Get Cisco configuration
+      cisco.ios.ios_command:
+        commands:
+          - show running-config
+      register: backup
+
+    - name: Save Cisco backup
+      ansible.builtin.copy:
+        content: "{{ backup.stdout[0] }}"
+        dest: "backups/{{ inventory_hostname }}_{{ lookup('pipe', 'date +%Y-%m-%d') }}.cfg"

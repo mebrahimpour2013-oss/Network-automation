@@ -1,0 +1,20 @@
+ssh -o KexAlgorithms=+diffie-hellman-group14-sha1 -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedAlgorithms=+ssh-rsa -o Ciphers=+aes128-cbc admin@192.168.10.2ssh -o KexAlgorithms=+diffie-hellman-group14-sha1 -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedAlgorithms=+ssh-rsa -o Ciphers=+aes128-cbc admin@192.168.10.2mummmmmumu
+
+
+
+[mikrotik]
+remote-office ansible_host=192.168.10.1
+branch-01 ansible_host=192.168.20.1
+
+[mikrotik:vars]
+ansible_connection=ansible.netcommon.network_cli
+ansible_network_os=community.routeros.routeros
+ansible_user=admin
+
+[cisco]
+core-switch ansible_host=192.168.10.2
+
+[cisco:vars]
+ansible_connection=ansible.netcommon.network_cli
+ansible_network_os=cisco.ios.ios
+ansible_user=admin

@@ -1,0 +1,15 @@
+---
+- name: Test Cisco
+  hosts: cisco
+  gather_facts: false
+
+  tasks:
+    - name: Show version
+      cisco.ios.ios_command:
+        commands:
+          - show version
+      register: result
+
+    - name: Display result
+      ansible.builtin.debug:
+        var: result.stdout

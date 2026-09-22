@@ -1,0 +1,17 @@
+---
+- name: MikroTik Device Information
+  hosts: mikrotik
+  gather_facts: false
+
+  tasks:
+    - name: Get device information
+      community.routeros.command:
+        commands:
+          - /system identity print
+          - /system resource print
+          - /system routerboard print
+      register: device_info
+
+    - name: Show device information
+      debug:
+        var: device_info.stdout

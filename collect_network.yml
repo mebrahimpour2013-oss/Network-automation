@@ -1,0 +1,30 @@
+---
+- name: Collect MikroTik information
+  hosts: mikrotik
+  gather_facts: false
+
+  tasks:
+    - name: Get MikroTik identity
+      community.routeros.command:
+        commands:
+          - /system identity print
+      register: mikrotik_info
+
+    - name: Show MikroTik info
+      ansible.builtin.debug:
+        var: mikrotik_info.stdout
+
+- name: Collect Cisco information
+  hosts: cisco
+  gather_facts: false
+
+  tasks:
+    - name: Get Cisco version
+      cisco.ios.ios_command:
+        commands:
+          - show version
+      register: cisco_info
+
+    - name: Show Cisco info
+      ansible.builtin.debug:
+        var: cisco_info.stdout
