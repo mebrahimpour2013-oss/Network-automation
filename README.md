@@ -156,8 +156,9 @@ Timestamped Backup
 
 Before running the automation, install the required Ansible collections:
 
-`bash
+```bash
 ansible-galaxy collection install -r requirements.yml
+```
 The project requires:
 Ansible Core
 ansible.netcommon
