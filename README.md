@@ -47,7 +47,7 @@ Automation Architecture
         MikroTik Routers             Cisco Switches
               │                           │
               │                           │
-        RouterOS CLI/API               IOS CLI
+        RouterOS CLI               IOS CLI
               │                           │
               └─────────────┬─────────────┘
                             │
@@ -151,6 +151,19 @@ Configuration / Information
     │
     ▼
 Timestamped Backup
+
+## Requirements
+
+Before running the automation, install the required Ansible collections:
+
+`bash
+ansible-galaxy collection install -r requirements.yml
+The project requires:
+Ansible Core
+ansible.netcommon
+community.routeros
+cisco.ios
+SSH connectivity to the target network devices
 
 Technology Stack
 
