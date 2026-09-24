@@ -1,227 +1,229 @@
-Enterprise Network Automation
+#Enterprise Network Automation
 
-An Ansible-based network automation solution implemented in a commercial corporate network environment to automate configuration backup and operational information collection across MikroTik routers and Cisco switches.
+An Ansible-based network automation solution implemented and executed in a commercial corporate network environment to automate configuration backup and operational information collection across MikroTik routers and Cisco switches.
 
-Overview
+#Overview
 
-This project provides a practical multi-vendor network automation workflow using Ansible, MikroTik RouterOS, Cisco IOS, and Git.
+This project provides a practical Ansible-based automation framework for managing configuration backup and operational information collection in a multi-vendor network environment.
 
-The solution was implemented and successfully executed in a real corporate network environment to reduce manual configuration backup operations and provide a consistent, repeatable process for collecting network device information.
+The automation was designed and implemented to reduce repetitive administrative tasks, improve backup consistency, and provide a structured approach to network configuration management.
 
-Objectives
+#Objectives
 
 - Automate network device configuration backups
-- Reduce manual backup operations
-- Provide a consistent backup process across multiple vendors
-- Collect operational information from network devices
-- Organize automation tasks using reusable Ansible Roles
-- Maintain configuration backups with timestamped filenames
-- Provide a maintainable foundation for further network automation
+- Collect selected operational information from network devices
+- Support heterogeneous network environments
+- Reduce repetitive manual administration
+- Maintain organized, timestamped configuration backups
+- Provide a reusable and maintainable automation structure
 
-Supported Platforms
+#Supported Platforms
 
-MikroTik RouterOS
+Platform| Automation
+MikroTik RouterOS| Configuration backup and information collection
+Cisco IOS| Running configuration backup and information collection
 
-The automation workflow supports MikroTik routers and performs:
+#Automation Architecture
 
-- Configuration export
-- Device identity collection
-- System information collection
-- RouterBoard information collection
+Network Devices
+      |
+      +-------------------+
+      |                   |
+MikroTik RouterOS     Cisco IOS
+      |                   |
+      +---------+---------+
+                |
+             Ansible
+                |
+      +---------+---------+
+      |                   |
+Configuration Backup   Information Collection
+      |                   |
+      +---------+---------+
+                |
+             Backups
 
-Cisco IOS
+The automation communicates with network devices through their native CLI-based interfaces.
 
-The automation workflow supports Cisco IOS switches and performs:
+- MikroTik: RouterOS CLI
+- Cisco: IOS CLI
 
-- Running configuration collection
-- Timestamped configuration backup
-- Device version information collection
-
-Automation Architecture
-
-                    Ansible Control Node
-                            │
-                            │
-              ┌─────────────┴─────────────┐
-              │                           │
-        MikroTik Routers             Cisco Switches
-              │                           │
-              │                           │
-        RouterOS CLI               IOS CLI
-              │                           │
-              └─────────────┬─────────────┘
-                            │
-                     Configuration
-                       Collection
-                            │
-                            ▼
-                      Backup Storage
-                            │
-                    Timestamped Files
-
-Project Structure
+#Project Structure
 
 network-automation/
-├── README.md
+├── backups/
+├── docs/
+│   └── architecture.md
+├── roles/
+│   ├── cisco_backup/
+│   │   └── tasks/
+│   │       └── main.yml
+│   └── network_backup/
+│       └── tasks/
+│           └── main.yml
+├── tests/
+│   ├── cisco_test.yml
+│   └── test.yml
+├── ansible.cfg
 ├── inventory.ini
+├── requirements.yml
 ├── backup_network.yml
 ├── backup_role.yml
 ├── collect_info.yml
-├── collect_network.yml
-├── cisco_test.yml
-├── test.yml
-├── roles/
-│   ├── network_backup/
-│   │   └── tasks/
-│   │       └── main.yml
-│   └── cisco_backup/
-│       └── tasks/
-│           └── main.yml
-└── backups/
+└── collect_network.yml
 
-Implemented Automation
+#Implemented Automation
 
-Network Configuration Backup
+MikroTik Configuration Backup
 
-The backup workflow connects to network devices through Ansible Network CLI and collects their current configuration.
+The automation connects to MikroTik RouterOS devices and executes:
 
-For MikroTik devices, the automation executes the RouterOS export operation and stores the resulting configuration as an ".rsc" file.
+/export
 
-For Cisco IOS devices, the automation retrieves the running configuration and stores it as a ".cfg" file.
+The collected configuration is stored as a timestamped ".rsc" backup file.
 
-Backup filenames include the device hostname and execution timestamp to make individual backup versions easy to identify.
+Cisco Configuration Backup
 
-Example:
+For Cisco IOS devices, the automation executes:
 
-remote-office_2026-09-22_11-07-24.rsc
-branch-01_2026-09-22_11-07-24.rsc
-core-switch_2026-09-22_11-07-31.cfg
+show running-config
 
-Information Collection
+The collected configuration is stored as a timestamped ".cfg" backup file.
 
-The project also includes automation tasks for collecting operational information from network devices.
+#Information Collection
 
-MikroTik
+The project also provides operational information collection from network devices.
 
-Collected information includes:
+#MikroTik
+
+The automation collects information including:
 
 - System identity
-- System resource information
+- System resources
 - RouterBoard information
 
-Cisco
+#Cisco
 
-Collected information includes:
+The automation collects information including:
 
 - IOS version
-- Device information
+- Device operational information
 
-This information can be used as a foundation for future inventory, monitoring, compliance, and reporting automation.
+#Ansible Roles
 
-Ansible Roles
-
-The project uses Ansible Roles to separate vendor-specific automation logic.
+The project uses vendor-specific Ansible roles to separate device automation logic and improve maintainability.
 
 "network_backup"
 
-Responsible for MikroTik configuration backup.
+Responsible for MikroTik configuration backup using the "community.routeros" collection.
 
 "cisco_backup"
 
-Responsible for Cisco configuration backup.
+Responsible for Cisco configuration backup using the "cisco.ios" collection.
 
-This separation allows vendor-specific tasks to remain independent while the overall automation workflow remains consistent.
+#Execution Workflow
 
-Execution Workflow
+1. Define target devices in inventory
+              ↓
+2. Provide credentials at execution time
+              ↓
+3. Execute the appropriate Ansible playbook
+              ↓
+4. Connect to target network devices
+              ↓
+5. Execute vendor-specific commands
+              ↓
+6. Collect configuration or operational information
+              ↓
+7. Store timestamped backup files
 
-The general workflow is:
-Inventory
-    │
-    ▼
-Ansible Playbook
-    │
-    ▼
-Vendor-specific Role
-    │
-    ▼
-Network Device
-    │
-    ▼
-Configuration / Information
-    │
-    ▼
-Timestamped Backup
+#Technology Stack
 
-## Requirements
-
-Before running the automation, install the required Ansible collections:
-
-```bash
-ansible-galaxy collection install -r requirements.yml
-```
-The project requires:
-Ansible Core
-ansible.netcommon
-community.routeros
-cisco.ios
-SSH connectivity to the target network devices
-
-Technology Stack
-
-- Ansible
-- Ansible Network CLI
+- Ansible Core
+- Python
+- YAML
 - MikroTik RouterOS
 - Cisco IOS
-- Git
-- GitHub
-- Linux / WSL2
-- YAML
+- "ansible.netcommon"
+- "community.routeros"
+- "cisco.ios"
+- SSH-based network automation
 
-Security Considerations
+#Requirements
 
-Credentials are provided separately from the automation logic and are not intended to be embedded directly into automation tasks.
+Required Ansible collections are defined in "requirements.yml".
 
-Device configuration backups may contain sensitive operational information and should therefore be handled as protected operational data rather than publicly distributed configuration files.
+Install them with:
 
-For production deployments, credential management should be implemented using mechanisms such as Ansible Vault or an enterprise secrets-management solution.
+ansible-galaxy collection install -r requirements.yml
 
-Operational Characteristics
+Required components include:
 
-The automation was designed around the following principles:
+- Ansible Core
+- "ansible.netcommon"
+- "community.routeros"
+- "cisco.ios"
+- SSH connectivity to target network devices
 
-- Repeatable execution
-- Multi-vendor support
-- Reusable Ansible Roles
-- Timestamped backups
-- Separation of device-specific automation logic
-- Reduced manual configuration handling
-- Maintainable YAML-based automation
+#Security Considerations
 
-Future Improvements
+Credentials are supplied at execution time where applicable and are not intended to be hard-coded into the automation workflow.
 
-Potential extensions include:
+Public documentation intentionally excludes:
 
-- Centralized credential management
+- Real organizational credentials
+- Identifying infrastructure information
+- Production network addressing details
+- Sensitive organizational information
+
+Backup artifacts included in the repository do not represent real production credentials or identifying production infrastructure.
+
+#Operational Characteristics
+
+The automation provides a consistent and repeatable approach to network configuration management by:
+
+- Standardizing configuration backup procedures
+- Supporting multiple network vendors
+- Generating timestamped backup files
+- Reducing manual administrative tasks
+- Providing reusable Ansible roles
+- Simplifying operational information collection
+
+#Future Improvements
+
+Potential future enhancements include:
+
+- Centralized backup storage
+- Backup retention and lifecycle management
 - Configuration change detection
-- Backup retention management
-- Structured execution logging
-- Automated compliance checks
-- Configuration comparison
+- Automated backup validation
 - Scheduled execution
-- Multi-vendor device discovery
-- Integration with CI/CD workflows
-- Automated reporting
+- Structured logging
+- Monitoring and notification integration
+- Additional vendor support
+- Git-based configuration management
 
-Project Context
+#Project Context
 
-This project represents a practical network automation implementation rather than a purely theoretical or laboratory exercise.
+This project was implemented and executed in a commercial corporate network environment to automate configuration backup and operational information collection across MikroTik routers and Cisco switches.
 
-The automation workflows were executed against network devices in a commercial corporate network environment and the resulting configuration backups and information-collection operations were successfully verified.
+Organizational identifiers, real credentials, and sensitive infrastructure details have intentionally been excluded from the public documentation.
 
-Sensitive organizational information, device-specific credentials, and identifying infrastructure details are intentionally excluded from the public project documentation.
+The project represents practical experience applying Ansible-based automation to real-world multi-vendor network administration workflows.
 
-Author
+#Author
 
 Mohammad Ebrahimpour
 
-Network & IT Infrastructure | Network Automation | Network Security
+Network & IT Infrastructure Specialist
+
+Focus Areas:
+
+- Network Automation
+- Network Infrastructure
+- MikroTik
+- Cisco
+- Network Security
+- Python Automation
+- Ansible
+- Cloud Networking
